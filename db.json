@@ -1,0 +1,56 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "Pan Tadeusz",
+      "authorId": 1
+    },
+    {
+      "id": 1,
+      "title": "Ballady i romanse",
+      "authorId": 1
+    },
+    {
+      "id": 1,
+      "title": "Beniowski",
+      "authorId": 2
+    },
+    {
+      "id": 1,
+      "title": "Wiersze",
+      "authorId": 2
+    },
+    {
+      "title": "Drajwer błyskawica",
+      "authorId": 4,
+      "releaseDate": "8 czerwca 2008",
+      "id": 2
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "firstname": "Adam",
+      "lastname": "Mickiewicz",
+      "birthDate": "24 grudnia 1798"
+    },
+    {
+      "id": 2,
+      "firstname": "Juliusz",
+      "lastname": "Słowacki",
+      "birthDate": "4 września 1809"
+    },
+    {
+      "firstname": "Krystian",
+      "lastname": "Szmigielski",
+      "birthDate": "18 maja 2000",
+      "id": 3
+    },
+    {
+      "firstname": "Robert",
+      "lastname": "Kubica",
+      "birthDate": "7 grudnia 1984",
+      "id": 4
+    }
+  ]
+}
