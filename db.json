@@ -3,28 +3,32 @@
     {
       "id": 1,
       "title": "Pan Tadeusz",
-      "authorId": 1
+      "authorId": 1,
+      "releaseDate": "28 czerwca 1834"
     },
     {
-      "id": 1,
+      "id": 2,
       "title": "Ballady i romanse",
-      "authorId": 1
+      "authorId": 1,
+      "releaseDate": "1822"
     },
     {
-      "id": 1,
+      "id": 3,
       "title": "Beniowski",
-      "authorId": 2
+      "authorId": 2,
+      "releaseDate": "1841"
     },
     {
-      "id": 1,
-      "title": "Wiersze",
-      "authorId": 2
+      "id": 4,
+      "title": "Oda do wolności",
+      "authorId": 2,
+      "releaseDate": "1894"
     },
     {
       "title": "Drajwer błyskawica",
       "authorId": 4,
       "releaseDate": "8 czerwca 2008",
-      "id": 2
+      "id": 5
     }
   ],
   "authors": [

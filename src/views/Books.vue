@@ -8,11 +8,25 @@
             <th>Modyfikacje</th>
         </tr>
         <tr v-for="book in books" :key="book.id">
-            <td>{{ book.id }}</td>
-            <td>{{ book.title }}</td>
-            <td>{{ getAuthorName(book.authorId) }}</td>
-            <td>{{ book.releaseDate }}</td>
-            <td>Edytuj | <button @click="deleteBook(book.id)">Usuń</button></td>
+                <td>{{ book.id }}</td>
+
+                <td v-if="edited === book.id"><input v-model="editedTitle" ></td>
+                <td v-else>{{ book.title }}</td>
+
+                <td v-if="edited === book.id">
+                    <select v-model="editedAuthorId">
+                        <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
+                            {{ `${option.firstname}  ${option.lastname}` }}
+                        </option>
+                    </select>
+                </td>
+                <td v-else>{{ getAuthorName(book.authorId) }}</td>
+
+                <td v-if="edited === book.id"><input v-model="editedReleaseDate" ></td>
+                <td v-else>{{ book.releaseDate }}</td>
+
+                <td><button @click="editBook(book)">{{ edited === book.id ? 'Zapisz' : 'Edytuj' }}</button>
+                | <button @click="deleteBook(book.id)">Usuń</button></td>
         </tr>
     </table>
 
@@ -32,15 +46,14 @@
 <script>
 import axios from "axios";
 
-const booksURL = "http://localhost:3000/books";
-const authorsURL = "http://localhost:3000/authors";
+const baseURL = "http://localhost:3000";
 
 export default {
     async created() {
-        const books = await axios.get(booksURL);
+        const books = await axios.get(`${baseURL}/books`);
         this.books = books.data; 
 
-        const authors = await axios.get(authorsURL);
+        const authors = await axios.get(`${baseURL}/authors`);
         this.authors = authors.data; 
     },
     data() {
@@ -49,6 +62,12 @@ export default {
             title: "",
             authorId: "",
             releaseDate: "",
+
+            editedTitle: "",
+            editedAuthorId: "",
+            editedReleaseDate: "",
+
+            edited: NaN,
             books: [ ],
             authors: [ ]
         }
@@ -70,7 +89,7 @@ export default {
 
             const book = { title: this.title, authorId: this.authorId, releaseDate: this.releaseDate }
 
-            await axios.post(booksURL, book).then(res => {
+            await axios.post(`${baseURL}/books`, book).then(res => {
                 this.books = [...this.books, res.data];
 
                 this.title = ""
@@ -79,9 +98,27 @@ export default {
             })
         },
         async deleteBook(id) {
-            await axios.delete(`${booksURL}/${id}`).then(() => {
+            await axios.delete(`${baseURL}/books/${id}`).then(() => {
                 this.books = this.books.filter(b => b.id !== id)
             })
+        },
+        async editBook(book) {
+            if(this.edited === book.id)
+            {
+                const obj = { id: book.id, title: this.editedTitle, authorId: this.editedAuthorId, releaseDate: this.editedReleaseDate }
+                await axios.put(`${baseURL}/books/${book.id}`, obj).then(() => {
+                    const idx = this.books.findIndex(b => b.id === book.id)
+                    this.books[idx] = obj
+                })
+                this.edited = null
+            }
+            else
+            {
+                this.edited = book.id
+                this.editedTitle = book.title
+                this.editedAuthorId = book.authorId
+                this.editedReleaseDate = book.releaseDate
+            }
         }
     }
 }
