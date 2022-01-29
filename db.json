@@ -1,12 +1,6 @@
 {
   "books": [
     {
-      "id": 1,
-      "title": "Pan Tadeusz",
-      "authorId": 1,
-      "releaseDate": "28 czerwca 1834"
-    },
-    {
       "id": 2,
       "title": "Ballady i romanse",
       "authorId": 1,
@@ -55,6 +49,12 @@
       "lastname": "Kubica",
       "birthDate": "7 grudnia 1984",
       "id": 4
+    },
+    {
+      "firstname": "Andrzej",
+      "lastname": "Zaucha",
+      "birthDate": "1 marca 2001",
+      "id": 5
     }
   ]
 }

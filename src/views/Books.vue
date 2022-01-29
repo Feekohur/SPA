@@ -41,6 +41,16 @@
         Data wydania <input v-model="releaseDate"><br/>
         <button type="submit">Dodaj</button>
     </form>
+
+    <form>
+        Wybierz autora, którego chcesz wyświetlić książki <select v-model="authorId">
+                <option disabled value="">Wybierz autora</option>
+                <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
+                    {{ `${option.firstname}  ${option.lastname}` }}
+                </option>
+            </select><br/>
+        <button @click.prevent="filterBook(authorId)">Filtruj</button>
+    </form>
 </template>
 
 <script>
@@ -119,6 +129,11 @@ export default {
                 this.editedAuthorId = book.authorId
                 this.editedReleaseDate = book.releaseDate
             }
+        },
+        async filterBook(id){
+            let newbooks = await axios.get(`${baseURL}/books`);
+            this.books = newbooks.data;
+            this.books = this.books.filter(b => b.authorId == id)
         }
     }
 }
