@@ -4,25 +4,41 @@
       "id": 2,
       "title": "Ballady i romanse",
       "authorId": 1,
-      "releaseDate": "1822"
+      "category": "Poezja i dramat",
+      "publisher": "SBM",
+      "releaseDate": "12 marca 2020"
     },
     {
       "id": 3,
       "title": "Beniowski",
       "authorId": 2,
-      "releaseDate": "1841"
+      "category": "Poezja i dramat",
+      "publisher": "KtoCzyta.pl",
+      "releaseDate": "3 kwietnia 2017"
     },
     {
       "id": 4,
-      "title": "Oda do wolności",
-      "authorId": 2,
-      "releaseDate": "1894"
+      "title": "Projekt Riese",
+      "authorId": 6,
+      "category": "Kryminał i sensacja",
+      "publisher": "Filia",
+      "releaseDate": "26 stycznia 2022"
     },
     {
-      "title": "Drajwer błyskawica",
-      "authorId": 4,
-      "releaseDate": "8 czerwca 2008",
+      "title": "Wytrzymałość psychiczna",
+      "authorId": 7,
+      "category": "Rozwój osobisty",
+      "publisher": "Bellona",
+      "releaseDate": "19 stycznia 2022",
       "id": 5
+    },
+    {
+      "title": "Turkusowe szale",
+      "authorId": 6,
+      "category": "Literatura piękna",
+      "publisher": "Bellona",
+      "releaseDate": "16 września 2020",
+      "id": 6
     }
   ],
   "authors": [
@@ -45,16 +61,22 @@
       "id": 3
     },
     {
-      "firstname": "Robert",
-      "lastname": "Kubica",
-      "birthDate": "7 grudnia 1984",
-      "id": 4
-    },
-    {
       "firstname": "Andrzej",
       "lastname": "Zaucha",
       "birthDate": "1 marca 2001",
       "id": 5
+    },
+    {
+      "firstname": "Remigiusz",
+      "lastname": "Mróz",
+      "birthDate": "15 stycznia 1987",
+      "id": 6
+    },
+    {
+      "firstname": "Chris",
+      "lastname": "McNab",
+      "birthDate": "15 września 1970",
+      "id": 7
     }
   ]
 }

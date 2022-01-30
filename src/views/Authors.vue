@@ -32,6 +32,7 @@
             <b-form-input v-model="lastname"></b-form-input>
             Data urodzenia 
             <b-form-input v-model="birthDate"></b-form-input>
+            
             <b-button variant="success" type="submit">Dodaj</b-button>
         </form>
     </b-col>

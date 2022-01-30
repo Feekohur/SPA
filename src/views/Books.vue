@@ -68,6 +68,10 @@
                     {{ `${option.firstname}  ${option.lastname}` }}
                 </option>
             </b-form-select>
+            Kategoria 
+            <b-form-input v-model="category"></b-form-input>
+            Wydawca 
+            <b-form-input v-model="publisher"></b-form-input>
             Data wydania 
             <b-form-input v-model="releaseDate"></b-form-input>
 
@@ -155,7 +159,7 @@ export default {
                                 title: this.editedTitle, 
                                 authorId: this.editedAuthorId, 
                                 category: this.editedCategory,
-                                publisher: this.publisher,
+                                publisher: this.editedPublisher,
                                 releaseDate: this.editedReleaseDate }
                 await axios.put(`${baseURL}/books/${book.id}`, obj).then(() => {
                     const idx = this.books.findIndex(b => b.id === book.id)
@@ -168,8 +172,8 @@ export default {
                 this.edited = book.id
                 this.editedTitle = book.title
                 this.editedAuthorId = book.authorId
-                this.editedCategory = book.editedCategory
-                this.editedPublisher = book.editedPublisher
+                this.editedCategory = book.category
+                this.editedPublisher = book.publisher
                 this.editedReleaseDate = book.releaseDate
             }
         },
