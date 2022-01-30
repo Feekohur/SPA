@@ -7,6 +7,11 @@
 </template>
 
 <style>
+body{
+  margin: 0;
+  padding: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,12 +33,26 @@
   color: #42b983;
 }
 
-table, th, td {
-  border: 1px solid black;
-  padding: 10px;
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: initial;
 }
 
-table {
-  border-collapse: collapse;
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 3px 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
 }
 </style>

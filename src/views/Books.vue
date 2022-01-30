@@ -1,56 +1,79 @@
 <template>
+
+    <b-col style="width: 20%">
+        <form>
+            Filtr autorów:
+            <b-form-select v-model="filter" style="margin: 5px 10px">
+                <option value="-1">Bez filtrowania</option>
+                <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
+                    {{ `${option.firstname}  ${option.lastname}` }}
+                </option>
+            </b-form-select><br/>
+        </form>
+
+        <!-- 
+            Tu walnij sorta (w podobny sposób jak filter). Podpowiem, że v-model to jest jakby przypisanie inputa do zmiennej
+            jak przypisałem filter do tego selecta, to przy zmianie wartości w select(lub innym input), jednocześnie znmienia się
+            wartość zmiennej filter
+        -->
+    </b-col>
+
     <table>
         <tr>
             <th>Id</th>
             <th>Tytuł</th>
             <th>Autor</th>
+            <th>Kategoria</th>
+            <th>Wydawca</th>
             <th>Data wydania</th>
             <th>Modyfikacje</th>
         </tr>
-        <tr v-for="book in books" :key="book.id">
+        <tr v-for="book in getBooks()" :key="book.id">
                 <td>{{ book.id }}</td>
 
-                <td v-if="edited === book.id"><input v-model="editedTitle" ></td>
+                <td v-if="edited === book.id"><b-form-input v-model="editedTitle" style="width: 180px; margin: 0" ></b-form-input></td>
                 <td v-else>{{ book.title }}</td>
 
                 <td v-if="edited === book.id">
-                    <select v-model="editedAuthorId">
+                    <b-form-select v-model="editedAuthorId" style="width: 180px; margin: 0">
                         <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
                             {{ `${option.firstname}  ${option.lastname}` }}
                         </option>
-                    </select>
+                    </b-form-select>
                 </td>
                 <td v-else>{{ getAuthorName(book.authorId) }}</td>
 
-                <td v-if="edited === book.id"><input v-model="editedReleaseDate" ></td>
+                <td v-if="edited === book.id"><b-form-input v-model="editedCategory" style="width: 180px; margin: 0" ></b-form-input></td>
+                <td v-else>{{ book.category }}</td>
+
+                <td v-if="edited === book.id"><b-form-input v-model="editedPublisher" style="width: 180px; margin: 0" ></b-form-input></td>
+                <td v-else>{{ book.publisher }}</td>
+
+                <td v-if="edited === book.id"><b-form-input v-model="editedReleaseDate" style="width: 180px; margin: 0" ></b-form-input></td>
                 <td v-else>{{ book.releaseDate }}</td>
 
-                <td><button @click="editBook(book)">{{ edited === book.id ? 'Zapisz' : 'Edytuj' }}</button>
-                | <button @click="deleteBook(book.id)">Usuń</button></td>
+                <td><b-button variant="primary" @click="editBook(book)">{{ edited === book.id ? 'Zapisz' : 'Edytuj' }}</b-button>
+                <b-button variant="primary" @click="deleteBook(book.id)">Usuń</b-button></td>
         </tr>
     </table>
 
-    <form @submit.prevent="addBook">
-        Tytuł <input v-model="title"><br/>
-        Autor <select v-model="authorId">
+    <b-col style="width: 20%">
+        <form @submit.prevent="addBook">
+            Tytuł 
+            <b-form-input v-model="title"></b-form-input>
+            Autor 
+            <b-form-select v-model="authorId" style="margin: 5px 10px">
                 <option disabled value="">Wybierz autora</option>
                 <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
                     {{ `${option.firstname}  ${option.lastname}` }}
                 </option>
-            </select><br/>
-        Data wydania <input v-model="releaseDate"><br/>
-        <button type="submit">Dodaj</button>
-    </form>
+            </b-form-select>
+            Data wydania 
+            <b-form-input v-model="releaseDate"></b-form-input>
 
-    <form>
-        Wybierz autora, którego chcesz wyświetlić książki <select v-model="authorId">
-                <option disabled value="">Wybierz autora</option>
-                <option v-for="option in authors" v-bind:value="option.id" :key="option.id">
-                    {{ `${option.firstname}  ${option.lastname}` }}
-                </option>
-            </select><br/>
-        <button @click.prevent="filterBook(authorId)">Filtruj</button>
-    </form>
+            <b-button variant="success" type="submit">Dodaj</b-button>
+        </form>
+    </b-col>
 </template>
 
 <script>
@@ -71,15 +94,22 @@ export default {
             id: "",
             title: "",
             authorId: "",
+            category: "",
+            publisher: "",
             releaseDate: "",
 
             editedTitle: "",
             editedAuthorId: "",
+            editedCategory: "",
+            editedPublisher: "",
             editedReleaseDate: "",
 
-            edited: NaN,
+            edited: null,
             books: [ ],
-            authors: [ ]
+            authors: [ ],
+
+            filter: -1,
+            sort: -1
         }
     },
     methods: {
@@ -97,13 +127,19 @@ export default {
             if(typeof this.authorId != 'number')
                 return
 
-            const book = { title: this.title, authorId: this.authorId, releaseDate: this.releaseDate }
+            const book = { title: this.title, 
+                            authorId: this.authorId, 
+                            category: this.category,
+                            publisher: this.publisher, 
+                            releaseDate: this.releaseDate }
 
             await axios.post(`${baseURL}/books`, book).then(res => {
                 this.books = [...this.books, res.data];
 
                 this.title = ""
                 this.authorId = ""
+                this.category = ""
+                this.publisher = ""
                 this.releaseDate = ""
             })
         },
@@ -115,7 +151,12 @@ export default {
         async editBook(book) {
             if(this.edited === book.id)
             {
-                const obj = { id: book.id, title: this.editedTitle, authorId: this.editedAuthorId, releaseDate: this.editedReleaseDate }
+                const obj = { id: book.id, 
+                                title: this.editedTitle, 
+                                authorId: this.editedAuthorId, 
+                                category: this.editedCategory,
+                                publisher: this.publisher,
+                                releaseDate: this.editedReleaseDate }
                 await axios.put(`${baseURL}/books/${book.id}`, obj).then(() => {
                     const idx = this.books.findIndex(b => b.id === book.id)
                     this.books[idx] = obj
@@ -127,13 +168,20 @@ export default {
                 this.edited = book.id
                 this.editedTitle = book.title
                 this.editedAuthorId = book.authorId
+                this.editedCategory = book.editedCategory
+                this.editedPublisher = book.editedPublisher
                 this.editedReleaseDate = book.releaseDate
             }
         },
-        async filterBook(id){
-            let newbooks = await axios.get(`${baseURL}/books`);
-            this.books = newbooks.data;
-            this.books = this.books.filter(b => b.authorId == id)
+        getBooks() {
+            let tempBooks = this.books;
+
+            if(this.filter > -1)
+                tempBooks = tempBooks.filter(b => b.authorId == this.filter)
+            
+            // tu sortowanie, jeśli -1 to niech nie sortuje (podobnie jak filter)
+
+            return tempBooks
         }
     }
 }
