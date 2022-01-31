@@ -11,6 +11,16 @@
             </b-form-select><br/>
         </form>
 
+        <form>
+            Sortowanie:
+            <b-form-select v-model="sort" style="margin: 5px 10px">
+                <option value="-1">Bez sortowania</option>
+                <option v-for="option in sort_options" v-bind:value="option.id" :key="option.id">
+                    {{ `${option.name}` }}
+                </option>
+            </b-form-select><br/>
+        </form>
+
         <!-- 
             Tu walnij sorta (w podobny sposób jak filter). Podpowiem, że v-model to jest jakby przypisanie inputa do zmiennej
             jak przypisałem filter do tego selecta, to przy zmianie wartości w select(lub innym input), jednocześnie znmienia się
@@ -111,6 +121,11 @@ export default {
             edited: null,
             books: [ ],
             authors: [ ],
+            sort_options: [{id:0, name:"Tytuł"},
+            {id:1, name:"Autor"},
+            {id:2, name:"Kategoria"},
+            {id:3, name:"Wydawca"}
+            ],
 
             filter: -1,
             sort: -1
@@ -182,9 +197,22 @@ export default {
 
             if(this.filter > -1)
                 tempBooks = tempBooks.filter(b => b.authorId == this.filter)
-            
             // tu sortowanie, jeśli -1 to niech nie sortuje (podobnie jak filter)
-
+             if(this.sort==-1)
+                tempBooks = tempBooks.sort((a, b) => 
+        a.id-b.id)
+            if(this.sort==0)
+                tempBooks = tempBooks.sort((a, b) => 
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+            if(this.sort==1)
+                tempBooks = tempBooks.sort((a, b) => 
+        this.getAuthor(a.authorId).firstname.toLowerCase().localeCompare(this.getAuthor(b.authorId).firstname.toLowerCase()));
+            if(this.sort==2)
+                tempBooks = tempBooks.sort((a, b) => 
+        a.category.toLowerCase().localeCompare(b.category.toLowerCase()));
+            if(this.sort==3)
+                tempBooks = tempBooks.sort((a, b) => 
+        a.publisher.toLowerCase().localeCompare(b.publisher.toLowerCase()));
             return tempBooks
         }
     }
